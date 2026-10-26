@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "huper"
+version = "0.1.0"
+description = "Independent reproduction pipeline for HuPer brain captioning"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "accelerate==0.34.2",
+  "braceexpand==0.1.7",
+  "einops==0.8.0",
+  "einops-exts==0.0.4",
+  "huggingface-hub==0.24.6",
+  "matplotlib==3.9.2",
+  "numpy==2.0.2",
+  "opencv-python==4.10.0.84",
+  "pillow==10.4.0",
+  "pycocoevalcap==1.2",
+  "pyyaml==6.0.2",
+  "sentencepiece==0.2.0",
+  "torch==2.4.0",
+  "torchvision==0.19.0",
+  "tqdm==4.66.5",
+  "transformers==4.44.2",
+  "webdataset==0.2.100",
+]
+
+[project.optional-dependencies]
+test = ["pytest==8.3.5", "ruff==0.6.3"]
+
+[project.scripts]
+huper = "huper.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["huper*", "llava*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["llava"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

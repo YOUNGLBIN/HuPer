@@ -1,0 +1,9 @@
+name: huper
+channels:
+  - defaults
+dependencies:
+  - python=3.10.20
+  - pip=26.1.1
+  - openjdk=11
+  - pip:
+      - -e .[test]

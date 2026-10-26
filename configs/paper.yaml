@@ -1,0 +1,74 @@
+paths:
+  # Required: change this to the NSD root containing webdataset_avg_split/.
+  nsd_root: /path/to/nsd
+  output_root: outputs
+  hf_home: models/huggingface
+  spice_home: models/spice
+  references: data/brainhub/fmri_cococap.json
+
+models:
+  mqt_repo_id: gordonhu/MQT-LLaVA-7b
+  mqt_revision: 089bfb3094e9c8c27c8cc557fc3e1a54bd3394ee
+  clip_repo_id: openai/clip-vit-large-patch14-336
+  clip_revision: ce19dc912ca5cd21c8a653c79e251e808ccabcd1
+  mqt_model_path: null
+  offline: true
+
+experiment:
+  subjects: [1, 2, 5, 7]
+  kernels: [1, 3, 9, 15, 21, 27, 33, 39, 45, 51, 57, 63]
+  mqt_num_tokens: 256
+  seed: 42
+
+preprocess:
+  splits: [train, val, test]
+  batch_size: 128
+  mqt_model_dtype: float16
+  storage_dtype: float16
+  device: cuda
+  output_path: outputs/cache/gaussian_feature_cache.pt
+
+train:
+  run_name: huper_paper_seed42
+  output_dir: outputs/train/huper_paper_seed42
+  feature_cache: outputs/cache/gaussian_feature_cache.pt
+  batch_size: 32
+  val_batch_size: 64
+  num_epochs: 160
+  max_lr: 0.0003
+  recon_loss: mse
+  use_norm: false
+  use_token: true
+  eval_val: false
+  fusion_prior_alpha: 1.0
+  fusion_init_std: 0.01
+  fusion_kl_weight: 0.1
+  cache_features_on_gpu: false
+
+inference:
+  checkpoint: outputs/train/huper_paper_seed42/last.pth
+  output_dir: outputs/inference/last
+  batch_size: 1
+  val_batch_size: 1
+  temperature: 0.0
+  top_p: null
+  num_beams: 1
+  max_new_tokens: 128
+  device: cuda
+  prompt: |-
+    <image>
+    Task: Describe the image as simply as possible.
+
+    Objective: Provide a neutral, one-sentence description of the image. Focus only on the primary subject and its immediate action or position.
+
+    Strict Rules:
+    1. Word Count: Must be strictly between 7 and 11 words.
+    2. No Prefixes: Do not use "A photo of", "The image shows", or "There is".
+    3. Start Directly: Begin the sentence immediately with the main subject.
+
+    Output (Strictly 7-11 words):
+
+evaluation:
+  input_root: outputs/inference/last
+  output_dir: outputs/evaluation/last
+  require_complete: true

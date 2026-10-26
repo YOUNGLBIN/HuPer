@@ -1,0 +1,23 @@
+COCO Caption Annotation Notice
+
+Material:
+  COCO caption annotations contained in
+  data/brainhub/fmri_cococap.json
+
+Creator:
+  COCO Consortium
+
+Original source and terms:
+  https://cocodataset.org/#termsofuse
+
+License:
+  Creative Commons Attribution 4.0 International (CC BY 4.0)
+  https://creativecommons.org/licenses/by/4.0/legalcode
+
+Processing and changes:
+  BrainHub distributed a processed ground-truth subset containing 4,913
+  captions for 982 test images. HuPer packages that processed subset under a
+  project-local path for evaluation. HuPer does not claim authorship of the
+  captions and does not intentionally alter their text.
+
+No endorsement by the COCO Consortium or BrainHub authors is implied.
